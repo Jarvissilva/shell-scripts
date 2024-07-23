@@ -1,0 +1,27 @@
+rm -rf output
+n=5
+
+cd input
+ls -1 | head -n $n
+cd ..
+
+mkdir output
+
+count=1
+mkdir output/word_files
+
+for txt_file in input/*.txt; do
+ pandoc "$txt_file" -o "output/word_files/word_file($count).docx"
+ ((count++))
+
+ if [ "$count" -gt "$n" ]; then
+   break
+ fi
+done
+
+ncount=1
+mkdir output/txt_files
+for word_file in output/word_files/*.docx; do
+ pandoc "$word_file" -o "output/txt_files/txt_file($ncount).txt"
+ ((ncount++))
+done
